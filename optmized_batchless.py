@@ -76,7 +76,7 @@ for trial in study:
     ## train, val, test data split
     # note these are not split by cluster yet.....
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1)
-    #X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=1)
+    X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=1)
 
     # Training
     scores_epochs = list()
@@ -92,14 +92,20 @@ for trial in study:
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        if epoch % 5 == 0:
+        if epoch % 500 == 0:
             inputs_val = torch.from_numpy(X_val)
             labels_val = torch.from_numpy(y_val)
 
             outputs_val = model(inputs_val).view(-1,)
             score = r2_score(labels_val.data.numpy(), outputs_val.data.numpy())
+            score_train = r2_score(torch.from_numpy(y_train).data.numpy(), model(torch.from_numpy(X_train)).view(-1,).data.numpy())
+            study.add_observation(trial=trial,
+                        iteration = epoch,
+                        objective=score,
+                        context={'training_error': score_train}
+                        )
+
     #         print('Predictive accuracy on validation set at epoch {}/{} is {}'.format(epoch, num_epochs, score)) 
-            scores_epochs.append(score)
     score_test = r2_score(torch.from_numpy(y_test).data.numpy(), model(torch.from_numpy(X_test)).view(-1,).data.numpy())
     score_train = r2_score(torch.from_numpy(y_train).data.numpy(), model(torch.from_numpy(X_train)).view(-1,).data.numpy())
     study.add_observation(trial=trial,
