@@ -22,7 +22,7 @@ import pandas as pd
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
-
+from Statistics_helper import stratified_cluster_sample
 from tqdm import tqdm
 from scipy.stats import pearsonr
 
@@ -98,20 +98,7 @@ def transfer_learning(
     grt_tests = list()
 
     for seed in seeds:
-        data_small = data.sample(n=nsamples, random_state=seed)
-
-        another_property = one_filter(data_small, another_filter_columns)
-        descriptors_small = get_descriptors(data_small, descriptor_columns)
-
-        X_small = np.array(descriptors_small.values, dtype=np.float32)
-        y_small = np.array(another_property.values, dtype=np.float32).reshape(
-            len(X_small),
-        )
-
-        X_small = data_scaler(X_small)
-        y_small = data_scaler(y_small.reshape(-1, 1)).reshape(len(X_small),)
-
-        ## hyper-parameters
+        X_train,X_test,y_train,y_test=stratified_cluster_sample(data,descriptor_columns,one_filter_columns[0],5)
 
         ## model, loss, and optimizer
         if transfer:

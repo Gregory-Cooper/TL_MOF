@@ -17,17 +17,18 @@ def compare_layer(l1, l2):
 
 
 def make_pca_agg_fit(
+    seed,
     data,
     variability,
     comp_guas,
-    func_give=AgglomerativeClustering,
+    func_give=KMeans,
     array_out=False,
     loud=False,
 ):
     flag = True
     start = 2
     while flag:
-        Out = PCA(n_components=start)
+        Out = PCA(n_components=start,random_state=seed)
         g = Out.fit(data)
         check = sum(Out.explained_variance_ratio_)
         hold = Out.explained_variance_ratio_
@@ -35,7 +36,6 @@ def make_pca_agg_fit(
             flag = False
         if start > 10:
             flag = False
-        print(start)
         start += 1
     if start > 2 and loud:
         print(
@@ -46,7 +46,7 @@ def make_pca_agg_fit(
     pc2 = a.T[:][1]
     if loud:
         plt.scatter(pc1, pc2)
-    func = func_give(n_clusters=comp_guas)
+    func = func_give(n_clusters=comp_guas,random_state=seed)
     color = func.fit_predict(data)
     if loud:
         plt.scatter(pc1, pc2, c=color)
@@ -57,11 +57,11 @@ def make_pca_agg_fit(
         return pc1, pc2, color
 
 
-def make_pca_gausian_fit(data, variability, comp_guas, array_out=False, loud=False):
+def make_pca_gausian_fit(seed,data, variability, comp_guas, array_out=False, loud=False):
     flag = True
     start = 2
     while flag:
-        Out = PCA(n_components=start)
+        Out = PCA(n_components=start,random_state=seed)
         g = Out.fit(data)
         check = sum(Out.explained_variance_ratio_)
         hold = Out.explained_variance_ratio_
@@ -80,7 +80,7 @@ def make_pca_gausian_fit(data, variability, comp_guas, array_out=False, loud=Fal
     pc2 = a.T[:][1]
     if loud:
         plt.scatter(pc1, pc2)
-    Gaus = GaussianMixture(n_components=comp_guas)
+    Gaus = GaussianMixture(n_components=comp_guas,random_state=seed)
     Gaus = Gaus.fit(data)
     color = Gaus.predict(data)
     if loud:
@@ -116,7 +116,7 @@ def rescale(test):
     return g
 
 
-def sample_cluster_frame(frame,clusters,predict,sample=100,output=False):
+def sample_cluster_frame(seed,frame,clusters,predict,sample=100,output=False):
     assert sample % len(np.unique((clusters))) == 0
     frame["Cluster"]=clusters
     Y=frame[str(predict)]
@@ -130,9 +130,9 @@ def sample_cluster_frame(frame,clusters,predict,sample=100,output=False):
         Cluster_df=[]
     for i in sorted(frame["Cluster"].unique()):
         frame_t=frame[frame["Cluster"]==i]
-        sampled_frame=frame_t.sample(int(sample/len(np.unique(clusters))))
+        sampled_frame=frame_t.sample(int(sample/len(np.unique(clusters))),random_state=seed)
         Y=PFE.iloc[sampled_frame.index.values]
-        X_train_1, X_test_1, y_train_1, y_test_1 = train_test_split(sampled_frame, Y, test_size=0.2, random_state=1)
+        X_train_1, X_test_1, y_train_1, y_test_1 = train_test_split(sampled_frame, Y, test_size=0.2, random_state=seed)
         X_train=X_train.append(X_train_1)
         X_test=X_test.append(X_test_1)
         y_train=y_train.append(y_train_1)
@@ -143,10 +143,10 @@ def sample_cluster_frame(frame,clusters,predict,sample=100,output=False):
         return Cluster_df,X_train,X_test,y_train,y_test
     return X_train,X_test,y_train,y_test 
 
-def stratified_cluster_sample(frame,feature_array,interest,n_cluster,var_ratio=.01,sample=100,C_type=Kmeans):
+def stratified_cluster_sample(seed,frame,feature_array,interest,n_cluster,var_ratio=.01,sample=100,C_type=KMeans):
     feat_5=frame[feature_array]
     r_feat_5=rescale(feat_5)
-    pc1,pc2,color=make_pca_agg_fit(r_feat_5,var_ratio,n_cluster,func_give=C_meathod,array_out=True,loud=False)
+    pc1,pc2,color=make_pca_agg_fit(seed,r_feat_5,var_ratio,n_cluster,func_give=C_type,array_out=True,loud=False)
     r_feat_5[interest]=frame[interest]
-    X_train,X_test,y_train,y_test=sample_cluster_frame(r_feat_5,color,interest,sample)
+    X_train,X_test,y_train,y_test=sample_cluster_frame(seed,r_feat_5,color,interest,sample)
     return X_train,X_test,y_train,y_test
