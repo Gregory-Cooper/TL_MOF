@@ -50,8 +50,7 @@ descriptors = get_descriptors(data, descriptor_columns)
 # prepare training inputs and outputs
 X = np.array(descriptors.values, dtype=np.float32)
 y = np.array(one_property.values, dtype=np.float32).reshape(len(X), )
-print(X.shape)
-print(y.shape)
+
 X = data_scaler(X)
 y = data_scaler(y.reshape(-1, 1)).reshape(len(X),)
 
