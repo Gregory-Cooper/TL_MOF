@@ -32,7 +32,7 @@ class NeuralNet_sherpa_optimize(nn.Module):
 		super(NeuralNet_sherpa_optimize, self).__init__()
 		#unpack sherpa package note 2 properties used outside
 		hidden_size_1=Parameters["H_l1"]
-		hidden_size_2=Parameters["H_l2"]
+		hidden_size_2=Parameters["H_l1"]/2 #found by first trial set anaylsis
 		activate=Parameters["activate"]
 		#general dictionary for activation functions
 		self.dic_activation={
@@ -55,3 +55,4 @@ class NeuralNet_sherpa_optimize(nn.Module):
 		out = self.activate(out)
 		out = self.fc3(out)
 		return out 
+
