@@ -128,17 +128,19 @@ def sample_cluster_frame(seed,frame,clusters,predict,sample=100,output=False):
     y_test=pd.DataFrame([])
     if output:
         Cluster_df=[]
-    for i in sorted(frame["Cluster"].unique()):
+    for count,i in enumerate(sorted(frame["Cluster"].unique())):
         frame_t=frame[frame["Cluster"]==i]
-        sampled_frame=frame_t.sample(int(sample/len(np.unique(clusters))),random_state=seed)
+        sampled_frame=frame_t.sample(int(sample/len(np.unique(clusters))),random_state=seed,replace=True)
         Y=PFE.iloc[sampled_frame.index.values]
         X_train_1, X_test_1, y_train_1, y_test_1 = train_test_split(sampled_frame, Y, test_size=0.2, random_state=seed)
         X_train=X_train.append(X_train_1)
         X_test=X_test.append(X_test_1)
-        y_train=y_train.append(y_train_1)
-        y_test=y_test.append(y_test_1)
+        y_train=pd.concat([y_train,y_train_1.transpose()])
+        y_test=pd.concat([y_test,y_test_1.transpose()])
         if output:
             Cluster_df.append(frame)
+    y_train=y_train.rename(columns={0:predict})
+    y_test=y_test.rename(columns={0:predict})
     if output:
         return Cluster_df,X_train,X_test,y_train,y_test
     return X_train,X_test,y_train,y_test 
