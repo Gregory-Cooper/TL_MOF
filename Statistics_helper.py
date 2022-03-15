@@ -145,10 +145,14 @@ def sample_cluster_frame(seed,frame,clusters,predict,sample=100,output=False):
         return Cluster_df,X_train,X_test,y_train,y_test
     return X_train,X_test,y_train,y_test 
 
-def stratified_cluster_sample(seed,frame,feature_array,interest,n_cluster,var_ratio=.01,sample=100,C_type=KMeans):
+def stratified_cluster_sample(seed,frame,feature_array,interest,n_cluster,var_ratio=.01,sample=100,C_type=KMeans,net_out=False):
     feat_5=frame[feature_array]
     r_feat_5=rescale(feat_5)
     pc1,pc2,color=make_pca_agg_fit(seed,r_feat_5,var_ratio,n_cluster,func_give=C_type,array_out=True,loud=False)
     r_feat_5[interest]=frame[interest]
-    X_train,X_test,y_train,y_test=sample_cluster_frame(seed,r_feat_5,color,interest,sample)
-    return X_train,X_test,y_train,y_test
+    if net_out:
+        df,X_train,X_test,y_train,y_test=sample_cluster_frame(seed,r_feat_5,color,interest,sample,output=True)
+        return df,X_train,X_test,y_train,y_test
+    else:
+        X_train,X_test,y_train,y_test=sample_cluster_frame(seed,r_feat_5,color,interest,sample,output=False)
+        return X_train,X_test,y_train,y_test

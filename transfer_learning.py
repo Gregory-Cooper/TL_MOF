@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 from torch.autograd import Variable 
-
+from torch.utils.data import Dataset
 import numpy as np 
 import matplotlib.pyplot as plt 
 import time 
@@ -56,3 +56,18 @@ class NeuralNet_sherpa_optimize(nn.Module):
 		out = self.fc3(out)
 		return out 
 
+class MyDataset(Dataset):
+
+  def __init__(self,frame,interest,features):
+
+    x=frame[features].values
+    y=frame[interest].values
+
+    self.x_train=torch.tensor(x,dtype=torch.float32)
+    self.y_train=torch.tensor(y,dtype=torch.float32)
+
+  def __len__(self):
+    return len(self.y_train)
+  
+  def __getitem__(self,idx):
+    return self.x_train[idx],self.y_train[idx]
