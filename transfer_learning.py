@@ -58,16 +58,17 @@ class NeuralNet_sherpa_optimize(nn.Module):
 
 class MyDataset(Dataset):
 
-  def __init__(self,frame,interest,features):
+	def __init__(self,frame,interest,features):
 
-    x=frame[features].values
-    y=frame[interest].values
+		x=frame[features].values
+		y=frame[interest].values
 
-    self.x_train=torch.tensor(x,dtype=torch.float32)
-    self.y_train=torch.tensor(y,dtype=torch.float32)
+		self.x_train=torch.tensor(x,dtype=torch.float32)
+		y_train=torch.tensor(y,dtype=torch.float32)
+		self.y_train=y_train.view(-1,1)
 
-  def __len__(self):
-    return len(self.y_train)
-  
-  def __getitem__(self,idx):
-    return self.x_train[idx],self.y_train[idx]
+	def __len__(self):
+		return len(self.y_train)
+
+	def __getitem__(self,idx):
+		return self.x_train[idx],self.y_train[idx]
