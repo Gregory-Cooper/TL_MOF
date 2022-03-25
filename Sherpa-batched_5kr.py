@@ -76,7 +76,7 @@ input_size = 5
 output_size = 1
 
 # file specifics 
-filename = f"From-{one_filter_columns[0]}_to_{another_filter_columns[0]}.json"
+json_name = "to5barKr.json"
 
 #format data
 for trial in study:
@@ -223,4 +223,4 @@ for trial in study:
     transfer_trainer.logger.disabled=True
     transfer_trainer.run(train_loader, max_epochs=epochs)
 
-study.results.to_json(file_name)
+study.results.to_json(json_name)
