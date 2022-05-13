@@ -1,7 +1,7 @@
 # help function
 import json
 from transfer_learning import NeuralNet_sherpa_optimize
-from dataset_loader import data_loader, get_descriptors, one_filter, data_scaler
+from Functions.dataset_loader import data_loader, get_descriptors, one_filter, data_scaler
 
 # modules
 import torch
@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 
 # New
 from transfer_learning import MyDataset
-from Statistics_helper import stratified_cluster_sample
+from Functions.Statistics_helper import stratified_cluster_sample
 from ignite.engine import Engine, Events, create_supervised_evaluator
 from ignite.metrics import Loss
 from ignite.contrib.metrics.regression import R2Score

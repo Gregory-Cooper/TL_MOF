@@ -2,7 +2,7 @@ import sherpa
 
 # help function
 from transfer_learning import NeuralNet_sherpa_optimize
-from dataset_loader import (
+from Functions.dataset_loader import (
     data_loader,
     all_filter,
     get_descriptors,
@@ -22,7 +22,7 @@ import pandas as pd
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
-from Statistics_helper import stratified_cluster_sample
+from Functions.Statistics_helper import stratified_cluster_sample
 from tqdm import tqdm
 from scipy.stats import pearsonr
 
