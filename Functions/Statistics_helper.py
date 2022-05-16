@@ -8,6 +8,8 @@ import pandas as pd
 from sklearn import preprocessing
 import numpy as np
 from sklearn.model_selection import train_test_split
+from scipy.spatial import ConvexHull
+from scipy.cluster.hierarchy import dendrogram
 from .helper import PCA_order_swap
 def compare_layer(l1, l2):
     w1 = l1.weight
@@ -178,3 +180,53 @@ def add_pca_and_graph(data2,pc1,pc2,color,graph=True,loud=True):
         for i, label in enumerate(annotations):
             plt.annotate(label, (new["Pc1"][i],new["Pc2"][i]),weight='bold',c="r",size=12)
     return data2
+
+def plot_outline(abridge):
+    alpha_tuples=[[a,b] for a,b in zip(abridge["Pc1"].to_numpy(),abridge["Pc2"].to_numpy())]
+    alpha_tuples=np.array(alpha_tuples)
+    hull=ConvexHull(alpha_tuples)
+    x=np.linspace(-4.2,-1.6,1001)
+    y= lambda x: -.5 - 1.5*x
+    plt.plot(x,y(x),'r--', lw=2)
+    x=np.linspace(-5,-4.2,1001)
+    y= lambda x: 2.6- .75*x
+    plt.plot(x,y(x),'r--', lw=2)
+    x=np.linspace(-1.6,5.5,1001)
+    y= lambda x: 2 + .1*x
+    plt.plot(x,y(x),'r--', lw=2)
+    x=np.linspace(-1.6,5,1001)
+    y= lambda x: 2 + .1*x
+    plt.plot(x,y(x),'r--', lw=2)
+    plt.plot(alpha_tuples[hull.vertices,0][:10], alpha_tuples[hull.vertices,1][:10], 'r--', lw=2)
+    plt.show()
+
+def plot_dendrogram(model,a, **kwargs):
+    # Create linkage matrix and then plot the dendrogram
+
+    # create the counts of samples under each node
+    counts = np.zeros(model.children_.shape[0])
+    n_samples = len(model.labels_)
+    for i, merge in enumerate(model.children_):
+        current_count = 0
+        for child_idx in merge:
+            if child_idx < n_samples:
+                current_count += 1  # leaf node
+            else:
+                current_count += counts[child_idx - n_samples]
+        counts[i] = current_count
+
+    linkage_matrix = np.column_stack(
+        [model.children_, model.distances_, counts]
+    ).astype(float)
+    # Plot the corresponding dendrogram
+    dendrogram(linkage_matrix,orientation='left',labels=a.index,**kwargs)
+
+def size_clusters(hold):
+    temp=[]
+    new=[]
+    for i in hold:
+        temp.append(len(i))
+    size=min(temp)
+    for i in hold:
+        new.append(i.sample(size))
+    return new

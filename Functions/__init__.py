@@ -1,2 +1,3 @@
 from .engine import get_processed_data,prep_data_splits
-from .Statistics_helper import make_pca_agg_fit,make_pca_gausian_fit,sample_cluster_frame,add_pca_and_graph
+from .Statistics_helper import make_pca_agg_fit,make_pca_gausian_fit,sample_cluster_frame,add_pca_and_graph,plot_outline,plot_dendrogram,size_clusters
+from .helper import anaylsis

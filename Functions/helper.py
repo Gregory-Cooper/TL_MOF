@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+import numpy as np
 
 def PCA_order_swap(x):
     #swaps clusters to order from left to right on pca
@@ -33,3 +35,40 @@ def count_clusters(abridge):
             else:
                 dic[j].append(0)
     return dic
+
+def anaylsis(mega,adjust=1):
+    for count,i in enumerate(mega):
+        hold=[]
+        for g in mega[i]:
+            scatter_holder=[]
+            hold.append(np.array(g))
+        fig, axs = plt.subplots(int(len(hold)/2),2, sharex=True,sharey=True)
+        rotate=0
+        base=0
+        m_set=0
+        min_set=0
+        for z in range(len(hold)):
+            scatter_holder.append(hold[z][-1])
+            if m_set <= max(-(hold[z]-hold[z][-1])):
+                m_set=max(-(hold[z]-hold[z][-1]))
+            if min_set <= min(-(hold[z]-hold[z][-1])):
+                min_set=min(-(hold[z]-hold[z][-1]))
+            axs[base,rotate].fill_between(np.linspace(n,epochs,len(hold[z])),-(hold[z]-hold[z][-1])/adjust, step="post", alpha=0.4,label=f"Base Transfer {z}")
+            #axs[base,rotate].scatter(np.linspace(n,epochs,len(hold[z])),-(hold[z]-hold[z][-1]),label=f"Base Transfer {z}")
+            fig.suptitle(f"Cluster {count} learning")
+            axs[base,rotate].set_title(f"Base Cluster {z}")
+            if rotate==1:
+                base+=1
+                rotate=0
+            else:
+                rotate+=1
+        fig.set_size_inches(18.5, 10.5)
+        fig.text(0.04, 0.5, "R^2 deviation from final", va='center', rotation='vertical')
+        fig.text(0.5, 0.04, "Epochs", ha='center')
+        plt.ylim(min_set/adjust,m_set/adjust)
+        plt.show()
+        plt.scatter(range(len(scatter_holder)),np.array(scatter_holder)/adjust,label=f"Base Transfer {z}")
+        plt.title(f"Cluster {count} final R^2")
+        plt.ylabel("R^2 score")
+        plt.xlabel("Cluster transfered from")
+        plt.show()
