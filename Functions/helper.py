@@ -36,7 +36,10 @@ def count_clusters(abridge):
                 dic[j].append(0)
     return dic
 
-def anaylsis(mega,adjust=1):
+def anaylsis(mega,adjust=1,n=1,epochs=500):
+    """
+    anaylsis of transfer learning graphs
+    """
     for count,i in enumerate(mega):
         hold=[]
         for g in mega[i]:
@@ -72,3 +75,17 @@ def anaylsis(mega,adjust=1):
         plt.ylabel("R^2 score")
         plt.xlabel("Cluster transfered from")
         plt.show()
+    
+def convert_meta(meta):
+    """
+    converts meta into usable format for analysis
+    """
+    base={}
+    for count,i in enumerate((meta[0])):
+        i=meta[0][i]
+        base[count]=(i)
+    for i in meta[1:]:
+        for g in i:
+            for count,z in enumerate(i[g]):
+                base[g][count]=np.array(base[g][count])+np.array(z)
+    return base
