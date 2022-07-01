@@ -36,7 +36,7 @@ def count_clusters(abridge):
                 dic[j].append(0)
     return dic
 
-def anaylsis(mega,adjust=1,n=1,epochs=500):
+def anaylsis(mega,adjust=1,n=1,epochs=500,save=True):
     """
     anaylsis of transfer learning graphs
     """
@@ -69,11 +69,8 @@ def anaylsis(mega,adjust=1,n=1,epochs=500):
         fig.text(0.04, 0.5, "R^2 deviation from final", va='center', rotation='vertical')
         fig.text(0.5, 0.04, "Epochs", ha='center')
         plt.ylim(min_set/adjust,m_set/adjust)
-        plt.show()
-        plt.scatter(range(len(scatter_holder)),np.array(scatter_holder)/adjust,label=f"Base Transfer {z}")
-        plt.title(f"Cluster {count} final R^2")
-        plt.ylabel("R^2 score")
-        plt.xlabel("Cluster transfered from")
+        if save:
+            plt.savefig(f"Learning comp_{i}.png",dpi=400)
         plt.show()
     
 def convert_meta(meta):

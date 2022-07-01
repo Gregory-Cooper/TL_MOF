@@ -74,7 +74,7 @@ def unpack_dic(dic,meta):
     for i in meta:
         for g in i:
             for count,z in enumerate(i[g]):
-                dic[(g,count)].append(z)
+                dic[(int(g),count)].append(z)
     return dic
 
 def create_std_matrix(dic,std_store):
@@ -112,7 +112,7 @@ def preformance_graph_and_prep_2nd_set(Cluster_colors,dic,dic2,adjust,save=False
                 store_all=np.array(g)
             else:
                 store_all=store_all+np.array(g)
-            store_max.append(max(g))
+            store_max.append((g[-1]))
         store_max=np.array(store_max)
         store_all=np.array(store_all)
         dic2[i].append((store_all/adjust))
@@ -120,7 +120,7 @@ def preformance_graph_and_prep_2nd_set(Cluster_colors,dic,dic2,adjust,save=False
         last=f_index
     for count,z in enumerate(Up_max):
         plt.errorbar(count,z.mean(),yerr=z.std(),fmt="o",c=Cluster_colors[count])
-    plt.title(f"Final Preformance for Base Cluster {5}")
+    plt.title(f"Final Preformance for Base Cluster {i[0]}")
     plt.ylabel("R^2 Preformance on Test set")
     plt.xlabel("Transfer Cluster")
     if save:
@@ -138,7 +138,7 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
     std_int=[]
     error_holder=[]
     last=0
-    difference=.1
+    difference=.05
     GB=True
     for i in dic2:
         f_index=i[0]
@@ -150,7 +150,7 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
         #std_test
         sy=(max(dic2[i][0]+std_store[i]))-dic2[i][0]+std_store[i]
         sx=np.linspace(1,epochs,resolution)
-        sindex=np.where(sy<(difference))
+        sindex=np.where(sy<(difference+sy[-1]))
         #regular diffs
         diff=max(dic2[i][0])-min(dic2[i][0])
         std1=std_store[i][0]
@@ -180,7 +180,7 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
                         g=g*byte*0.000001 #mega bytes
                         plt.ylabel("MegaBytes")
                     plt.errorbar(count,g,c=Cluster_colors[count],yerr=std_res[count]*conversion,fmt="o")
-            plt.title(f"Average Information to reach {difference*100} % Deviation Base {i[0]-1}")
+            plt.title(f"Average Information to reach {difference} Deviation Base {i[0]-1}")
             plt.xlabel("Transfer Cluster")
             if save:
                 plt.savefig(f"Average_info{i[0]-1}.png",dpi=400)
@@ -194,7 +194,7 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
             plt.ylabel("Net R^2 deviation squared")
             plt.xlabel("Transfer Cluster")
             if save:
-                plt.savefig(f"Integral{i[0]-1}.png",dpi=400)
+                plt.savefig(f"Learning_eff{i[0]-1}.png",dpi=400)
             plt.show()
             dif_holder=[]
             std_diff=[]
@@ -208,15 +208,17 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
         overfit_holder.append(overfit)
         try:
             first=index[0][0]
-            sfirst=index[0][0]
+            sfirst=sindex[0][0]
             integral=scipy.integrate.simps(y[:first], x=x[:first], dx=1, axis=-1, even='first')
             sintegral=scipy.integrate.simps(sy[:sfirst], x=sx[:sfirst], dx=1, axis=-1, even='first')
             integral_holder.append(integral)
             std_int.append(sintegral-integral)
-            print(integral,sintegral,sx[sfirst],x[first])
+            print("integral,std_int,+1_std,normal")
+            print(integral,sintegral-integral,sx[sfirst],x[first])
             residual_holder.append(x[first])
             std_res.append(sx[sfirst]-x[first])
-        except:
+        except Exception as e: 
+            print(e)
             print("error", i)
             integral_holder.append("error")
             std_int.append(0)
@@ -228,11 +230,11 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
             plt.errorbar(count,-z,marker="x",c=Cluster_colors[count],yerr=std_diff[count])
         else:
             plt.errorbar(count,z,marker="o",c=Cluster_colors[count],yerr=std_diff[count])
-    plt.title(f"Average Training Deviation on the Worst Epoch for Base {5}")
+    plt.title(f"Average Training Deviation on the Worst Epoch for Base {i[0]}")
     plt.ylabel("R^2 deviation from best preforming model")
     plt.xlabel("Transfer Cluster")
     if save:
-        plt.savefig(f"Training_Deviation{5}.png",dpi=400)
+        plt.savefig(f"Training_Deviation{i[0]}.png",dpi=400)
     plt.show()
     for count,g in enumerate(residual_holder):
         if g == "error":
@@ -246,21 +248,21 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
                 g=g*byte*0.000001 #mega bytes
                 plt.ylabel("MegaBytes")
             plt.errorbar(count,g,c=Cluster_colors[count],yerr=std_res[count]*conversion,fmt="o")
-    plt.title(f"Average Information to reach {difference*100} % Deviation Base {5}")
+    plt.title(f"Average Information to reach {difference} Deviation Base {i[0]}")
     plt.xlabel("Transfer Cluster")
     if save:
-        plt.savefig(f"Information{5}.png",dpi=400)
+        plt.savefig(f"Average_info{i[0]}.png",dpi=400)
     plt.show()
     for count,f in enumerate(integral_holder):
         if f == "error":
             plt.errorbar(count,0,c=Cluster_colors[count],yerr=0,fmt="x")
         else:
             plt.errorbar(count,f,c=Cluster_colors[count],yerr=std_int[count],fmt="o")
-    plt.title(f"Average Training time to reach {difference*100} % Deviation Base {5} ")
+    plt.title(f"Learning Efficency to reach {difference} Deviation Base {i[0]} ")
     plt.ylabel("Net R^2 deviation squared")
     plt.xlabel("Transfer Cluster")
     if save:
-        plt.savefig(f"Training_Time{5}.png",dpi=400)
+        plt.savefig(f"Learning_eff{i[0]}.png",dpi=400)
     plt.show()
 
 def make_distance_graph(dic,distances,Cluster_colors,name,save=False):
@@ -272,13 +274,17 @@ def make_distance_graph(dic,distances,Cluster_colors,name,save=False):
             for count,z in enumerate(Up_max):
                 temp=distances[f_index-1]
                 plt.errorbar(temp[count],z.mean(),yerr=z.std(),fmt="o",c=Cluster_colors[count],label=f"Cluster {count}")
-            plt.title(f"Final Preformance for Base Cluster {f_index-1}")
+            fig = plt.figure(1)
+            ax = fig.add_subplot(111)
+            ax.set_title(f"Final Preformance for Base Cluster {i[0]-1}")
             plt.ylabel("R^2 Preformance on Test set")
             plt.xlabel(f"{name} Distance")
-            plt.legend()
+            handles, labels = ax.get_legend_handles_labels()
             plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+            text = ax.text(-0.2,1.05, " ", transform=ax.transAxes)
+            lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(1.13, 1))
             if save:
-                plt.savefig(f"Distance_Graph_{f_index-1}.png")
+                plt.savefig(f"Distance_Graph_{i[0]-1}_{name}.png", bbox_extra_artists=(lgd,text), bbox_inches='tight')
             plt.show()
             Up_max=[]
         store_max=[]
@@ -288,7 +294,7 @@ def make_distance_graph(dic,distances,Cluster_colors,name,save=False):
                 store_all=np.array(g)
             else:
                 store_all=store_all+np.array(g)
-            store_max.append(max(g))
+            store_max.append((g[-1]))
         store_max=np.array(store_max)
         store_all=np.array(store_all)
         #dic2[i].append((store_all/adjust))
@@ -297,11 +303,15 @@ def make_distance_graph(dic,distances,Cluster_colors,name,save=False):
     for count,z in enumerate(Up_max):
         temp=distances[len(distances)-1]
         plt.errorbar(temp[count],z.mean(),yerr=z.std(),fmt="o",c=Cluster_colors[count],label=f"Cluster {count}")
-    plt.title(f"Final Preformance for Base Cluster {5}")
+    fig = plt.figure(1)
+    ax = fig.add_subplot(111)
+    ax.set_title(f"Final Preformance for Base Cluster {i[0]}")
     plt.ylabel("R^2 Preformance on Test set")
     plt.xlabel(f"{name} Distance")
-    plt.legend()
+    handles, labels = ax.get_legend_handles_labels()
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    text = ax.text(-0.2,1.05, " ", transform=ax.transAxes)
+    lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(1.13, 1))
     if save:
-        plt.savefig(f"Distance_Graph_{5}.png")
+        plt.savefig(f"Distance_Graph_{i[0]}_{name}.png", bbox_extra_artists=(lgd,text), bbox_inches='tight')
     plt.show()
