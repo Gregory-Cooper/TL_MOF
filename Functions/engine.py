@@ -97,7 +97,8 @@ def preformance_graph_and_prep_2nd_set(Cluster_colors,dic,dic2,adjust,save=False
         f_index=i[0]
         if f_index is not last:
             for count,z in enumerate(Up_max):
-                plt.errorbar(count,z.mean(),yerr=z.std(),fmt="o",c=Cluster_colors[count])
+                #note / 10 b/c of mote carlo
+                plt.errorbar(count,z.mean(),yerr=z.std()/10,fmt="o",c=Cluster_colors[count])
             plt.title(f"Final Preformance for Base Cluster {f_index-1}")
             plt.ylabel("R^2 Preformance on Test set")
             plt.xlabel("Transfer Cluster")
@@ -119,7 +120,8 @@ def preformance_graph_and_prep_2nd_set(Cluster_colors,dic,dic2,adjust,save=False
         Up_max.append(store_max)
         last=f_index
     for count,z in enumerate(Up_max):
-        plt.errorbar(count,z.mean(),yerr=z.std(),fmt="o",c=Cluster_colors[count])
+        #note the std / 10 is because of the net monte carlo
+        plt.errorbar(count,z.mean(),yerr=z.std()/10,fmt="o",c=Cluster_colors[count])
     plt.title(f"Final Preformance for Base Cluster {i[0]}")
     plt.ylabel("R^2 Preformance on Test set")
     plt.xlabel("Transfer Cluster")
@@ -247,7 +249,6 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
             residual_holder.append("error")
             std_res.append(0)
         last=f_index
-    print(master[(4,"set2")])
     for count,z in enumerate(dif_holder):
         if overfit_holder[count]:
             plt.errorbar(count,-z,marker="x",c=Cluster_colors[count],yerr=std_diff[count])
