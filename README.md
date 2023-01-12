@@ -13,7 +13,9 @@ The data set used in this work was originally generated in an older report and h
 
 Project Organization
 ------------
+
 ** Note - removed from paper = (rfp)**
+
     ├── README.md          <- The top-level README for developers using this project.
     ├── Batch_Runs          <- Data regarding optimizing the batch size
     │   ├── (*).py      <- Any File used to run on cluster for specific batch
