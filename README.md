@@ -67,10 +67,10 @@ Project Organization
     ├── topology_outline          <- specific topology scatter in pca figures
     │  
     │ (*** Below are main files used to process data ***)
-    ├── Cluster_analysis.ipynb <- file used to analize the data set and make most general figures
+    ├── Cluster_analysis.ipynb      <- file used to analize the data set and make most general figures
     ├── mover.ipynb <- packages any output pngs into a file   
-    ├── process_json_GC.ipynb <- processes json output of any of the GC cluster outputs (created by files in generic files or data_json generic)
-    ├── process_json_top.ipynb <- same as above but with topology
+    ├── process_json_GC.ipynb       <- processes json output of any of the GC cluster outputs (created by files in generic files or data_json generic)
+    ├── process_json_top.ipynb      <- same as above but with topology
     └── transfer learning.py        <- functions used to create general nn classes used in processing
     
 
@@ -79,15 +79,11 @@ Project Organization
 
 Instructions
 ------------
-This project is suppose to get NYISO data from the site and format it for later use in projects.  As such there are two main steps.  The first is to actually use a scapper to get the data of the site, the second is to format the data for reupload. 
+The general way to run the code below  
 
-   1. Download
-   
-            The first step is to use the webdriver_explained file to work and download the data. 
-            All the needed function are found in the data submodule so if you want a deeper dive check there. See figure one for
-            imformation on how to set up the files ideally for download.  This will make the
-            process much easier when looking at os and other files later.  You can change this pathing and layout, but currently is no 
-            supported by the code. 
+   1. Aquire the data
+        a. 
+        b.
         
    2. Rename locally 
    
