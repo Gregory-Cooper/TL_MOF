@@ -112,7 +112,7 @@ The general way to run a run of the data / code below
         
 Instructions for generating general figures
 ------------
-The general way to run a run of the data / code below  
+The general way to run analysis of the dataset without processing
 
    1. Simply Run the cluster analysis.ipynb file in the directory 
 
