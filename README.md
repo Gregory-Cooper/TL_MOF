@@ -77,63 +77,49 @@ Project Organization
 --------
 
 
-Instructions
+Instructions for running a trial
 ------------
-The general way to run the code below  
+The general way to run a run of the data / code below  
 
    1. Aquire the data
-        a. 
-        b.
+    1. Get the Data from json
+        Simply pull the corresponding json from the Data_Json Folder
+    2. Create the Data
+        1. Pull the ipynb file from either topology or generic files and place into the net folder directory
+        2. Make any changes that you want to the file to complete the run (change file configuration in ipynb)
+            (Note that this will create display the configurations you need to process files later)
+        3. Run the file through and generate the json file needed
+    
         
-   2. Rename locally 
-   
-            The second step is to take the data and rename it into similar formatting so that y
-            ou can loop through csv later.  Edge will do this to 100 so you can theoretically, but that requires some changing
-            of functions. This is done in the local folder in os_rename for my method.
+   2. Used the correct process file
+    1. Ensure that the topology files are used in process topology or vice versa for process generic (agreement with data)
+    2. Enter the relevent configuration information in the first part of the code (this is commented out)
+    3. It will output the needed figure set for that file
         
-   3. Reformat for upload
-   
-            The last step is to finish the formating of the actual underlying data and reupload it as
-            a set of csv.  The best way to do this is to loop through all of them thus they need to be generalize as in step 2.
-            The actual process is described in format_explained and the functions are found in data folder 
-            for the submodule.  It will output in form of figure 2 recommended.  If using large data set and 
-            memory is a issue see large_data_explained for making only the maindf portion
-            Any other is not supported outright by the code
+   3. Understanding the output
+    
+        The file will have the directory seen in Figure 1 below
         
-   4. Upload (optional)
-   
-            Upload data to wherever you see fit
+Instructions for generating general figures
+------------
+The general way to run a run of the data / code below  
+
+   1. Simply Run the cluster analysis.ipynb file in the directory 
+        Note - this file should be adjusted for what one figures you want and is set to save the figures in the directory
+   2. Use mover to package the output figures if desired
 
 Figure 1        
 --------
 
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-            └── type (rt-gen)    <- The type of data (ex real time generator abr. as rt_gen)
-                └── 2010            <- The first year of data you want (2010 choosen for this data thus far)
-                └── ....            <- middle years between
-                └── 20xx            <- The last year of data you want (2020 choosen for this data thus far for reference)
+    ├── (Name of json File used in process)
+    │   ├── META       <- meta figures associated with the average base clusters
+    │   │
+    │   ├── PC1       <- Figures where metrics are compared with respect to PC1
+    │   │
+    │   ├── PC2       <- Figures where metrics are compared with respect to PC2
+    │   │
+    │   ├── regular      <- Figures where metrics are compared with respect to net PC distance
+    │   │
+    │   └── Tables            <- Tabular summary of the data using tables with respect to net PC distance
+
  
-Figure 2        
---------
-
-    ├── data
-        └── interim        <- Intermediate data that has been transformed.
-            ├── maindf      <- The non main df set (1 year per gen per csv)
-            │   ├── 2010            <- The first year of data you want (2010 choosen for this data thus far)
-            │   ├── ....            <- middle years between
-            │   └── 20xx            <- The last year of data you want (2020 choosen for this data thus far for reference)
-            │       ├── gen1.csv            <- The first generator of data (will be called whatever gen name is in df and subsequent)
-            │       ├── ....                <- intermediate gen
-            │       └── genx.csv            <- The last gen you want 
-            │
-            │
-            └── masterframedf    <- masterframe formatted set (10 year in 1 csv per gen)
-                ├── gen1.csv            <- The first generator of data (will be called whatever gen name is in df and subsequent)
-                ├── ....                <- intermediate gen
-                └── genx.csv            <- The last gen you want 
-
-cookie cutter reference --- href="https://drivendata.github.io/cookiecutter-data-science/">
