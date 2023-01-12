@@ -28,6 +28,25 @@ def make_pca_agg_fit(
     array_out=False,
     loud=False,
 ):
+    """
+    Makes a clustering fit to pca data from raw data provided 
+
+    Inputs
+    ------
+    seed (int) - random seed
+    data (df or numpy array) - raw data to fit
+    variability (0-1 real) - how much variability you want in your comp. 
+    comp_guas (int) - k means cluster to use
+    func_give (sklearn function) - what type of clustering (kmean default)
+    array_out (bool) - if return data
+    loud (bool) - if print graphs of pca
+
+    Outputs
+    ------
+    pc1 (array) - pc1 components
+    pc2 (array - pc2 components
+    color (array) - cluster tags
+    """
     flag = True
     start = 2
     while flag:
@@ -61,6 +80,24 @@ def make_pca_agg_fit(
 
 
 def make_pca_gausian_fit(seed,data, variability, comp_guas, array_out=False, loud=False):
+    """
+    Makes a clustering fit to pca data from raw data provided using specifically guassian clustering
+
+    Inputs
+    ------
+    seed (int) - random seed
+    data (df or numpy array) - raw data to fit
+    variability (0-1 real) - how much variability you want in your comp. 
+    comp_guas (int) - k means cluster to use
+    array_out (bool) - if return data
+    loud (bool) - if print graphs of pca
+
+    Outputs
+    ------
+    pc1 (array) - pc1 components
+    pc2 (array - pc2 components
+    color (array) - cluster tags
+    """
     flag = True
     start = 2
     while flag:
@@ -96,6 +133,20 @@ def make_pca_gausian_fit(seed,data, variability, comp_guas, array_out=False, lou
 
 
 def time_series_with_error(hold, compare, interest, index):
+    """
+    plots a time series with corresponding error 
+
+    Inputs
+    ------
+    hold (df) - df of data to prepare (form of df has a interested column and a type of interest : ie group by activation function then look at test set)
+    compare (array of str) - subset of data frame
+    interest (str) - column of interest to analyize
+    index (str) - what to group by (see hold)
+
+    Outputs
+    ------
+     * displays plot, no object return *
+    """
     series = []
     labels = []
     for i in hold[compare].unique():
@@ -112,7 +163,20 @@ def time_series_with_error(hold, compare, interest, index):
         ax.fill_between(index_1, upper, Lower, alpha=0.2, linewidth=0)
         ax.plot(index_1, obj, label=labels[i])
         ax.legend()
+
+
 def rescale(test):
+    """
+    Standard scales data
+
+    Inputs
+    ------
+    test (array or df) - data to transform
+
+    Outputs
+    ------
+    g (df) - rescaled frame
+    """
     g=preprocessing.StandardScaler().fit_transform(test)
     g=pd.DataFrame(g)
     g.columns=test.columns
@@ -120,6 +184,24 @@ def rescale(test):
 
 
 def sample_cluster_frame(seed,frame,clusters,predict,sample=100,output=False):
+    """
+    stratified samples from frame with respect to the clusters
+
+    Inputs
+    ------
+    seed(int) -random seed
+    frame (df) - dataset frame with clusters already appened and refered to as "Cluster" column
+    clusters (int) - # refering to x row (ie [0,1,...] row 0 - cluster 0, row 1 - cluster 1,etc)
+    predict (df / array) - dependent variable to predict
+    sample (int) - nunber to sample per cluster
+
+    Outputs
+    ------
+    X_train (df) - var train set 
+    X_test (df) - var test set 
+    y_train (df) - prediction train set 
+    y_test  (df) - prediciton test set 
+    """
     assert sample % len(np.unique((clusters))) == 0
     frame["Cluster"]=clusters
     Y=frame[str(predict)]
@@ -149,6 +231,29 @@ def sample_cluster_frame(seed,frame,clusters,predict,sample=100,output=False):
     return X_train,X_test,y_train,y_test 
 
 def stratified_cluster_sample(seed,frame,feature_array,interest,n_cluster,var_ratio=.01,sample=100,C_type=KMeans,net_out=False):
+    """
+    pairs above functions together to go from raw to stratified sample
+
+    Inputs
+    ------
+    seed(int) -random seed
+    frame (df) - dataset frame with clusters already appened and refered to as "Cluster" column
+    feature array (array of str) - col names of features in frame
+    var_ratio (0-1 real) - ratio needed for clustering
+    interest (str) - prediction value to use (dependent variable)
+    n_clusters (int) - number of clusters to use
+    c_type (func) - function used to cluster
+    net_out (bol) - returns test / train splits with df, if no, df is not returned
+
+    Outputs
+    ------
+    X_train (df) - var train set 
+    X_test (df) - var test set 
+    y_train (df) - prediction train set 
+    y_test  (df) - prediciton test set 
+    if net out:
+        df (df) - net dataframe
+    """
     feat_5=frame[feature_array]
     r_feat_5=rescale(feat_5)
     pc1,pc2,color=make_pca_agg_fit(seed,r_feat_5,var_ratio,n_cluster,func_give=C_type,array_out=True,loud=False)
@@ -161,6 +266,21 @@ def stratified_cluster_sample(seed,frame,feature_array,interest,n_cluster,var_ra
         return X_train,X_test,y_train,y_test
 
 def add_pca_and_graph(data2,pc1,pc2,color,graph=True,loud=True):
+    """
+    plots pca space with clusters and labels
+
+    Inputs
+    ------
+    data2 (df) - df of data (index matches other inputs)
+    pc1 (array) -array of pc1 data (index matches other inputs)
+    pc2 (array) - array of pc2 data (index matches other inputs)
+    color (array) - array of cluster labels as int
+
+    Outputs
+    ------
+    data2 (df) - data2 returned with the addition of pc1,pc2,cluster
+
+    """
     dic={
     "Pc1" : pc1,
     "Pc2" : pc2,
@@ -182,6 +302,18 @@ def add_pca_and_graph(data2,pc1,pc2,color,graph=True,loud=True):
     return data2
 
 def plot_outline(abridge):
+    """
+    uses convex hull and manual functions to plot lines representing pca space of MOFs
+
+    Inputs
+    ------
+    abridge (df with col = "Pc1","Pc2") - data to plot
+
+    Outputs
+    ------
+    **plots outline **
+
+    """
     alpha_tuples=[[a,b] for a,b in zip(abridge["Pc1"].to_numpy(),abridge["Pc2"].to_numpy())]
     alpha_tuples=np.array(alpha_tuples)
     hull=ConvexHull(alpha_tuples)
@@ -201,6 +333,21 @@ def plot_outline(abridge):
     plt.show()
 
 def plot_dendrogram(model,a, **kwargs):
+    """
+    plots dendrogram 
+    - see https://scikit-learn.org/stable/auto_examples/cluster/plot_agglomerative_dendrogram.html for more 
+    - b/c of **kwargs, see for reference on what is possible to pass
+
+    Inputs
+    ------
+    model(object) - model of type generated by agg.  clustering 
+    a (arr of str) - labels for classes
+
+    Outputs
+    ------
+    **plots dendrogram **
+
+    """
     # Create linkage matrix and then plot the dendrogram
 
     # create the counts of samples under each node
@@ -222,6 +369,18 @@ def plot_dendrogram(model,a, **kwargs):
     dendrogram(linkage_matrix,orientation='left',labels=a.index,**kwargs)
 
 def size_clusters(hold):
+    """
+    resize cluster to be teh same size
+
+    Inputs
+    ------
+    hold (array) - array or df of cluster size
+
+    Outputs
+    ------
+    new (array) - sampled array of where each is sampled where len() =  len of smallest sample in hold
+
+    """
     temp=[]
     new=[]
     for i in hold:
