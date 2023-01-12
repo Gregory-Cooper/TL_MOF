@@ -146,7 +146,7 @@ Which was used in conjunction with this paper :
 [Transfer Learning Study of Gas Adsorption in Metal-Organic Frameworks](https://pubs.acs.org/doi/10.1021/acsami.0c06858?ref=pdf)
 Ruimin Ma, Yamil J. Colón, Tengfei Luo
 
-Creator Contracts
+Creator Contacts
 --------
 
 Colón Group - [Website](https://www.computationalnano.org/)
