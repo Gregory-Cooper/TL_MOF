@@ -138,16 +138,21 @@ Figure 1
 Acknowledgements      
 --------
 Data was forked off the following database as a starting point: 
+
 https://github.com/RUIMINMA1996/TL_MOF'
 
 Which was used in conjunction with this paper :
+
 [Transfer Learning Study of Gas Adsorption in Metal-Organic Frameworks](https://pubs.acs.org/doi/10.1021/acsami.0c06858?ref=pdf)
 Ruimin Ma, Yamil J. Colón, Tengfei Luo
 
 Creator Contracts
 --------
+
 Colón Group - [Website](https://www.computationalnano.org/)
+
 Gregory Cooper -  [My Github](https://github.com/Gregory-Cooper) - coopergregorym@gmail.com
+
 Yamil Colón -  ** Insert here ** - ycolon@nd.edu
 
 ## Note
