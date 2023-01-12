@@ -7,7 +7,7 @@ Metal-organic frameworks (MOFs) are promising materials currently being studied 
 
 Data set
 ------------
-The data set used in this work was originally generated in an older report and has also been used previously in a transfer learning study. Briefly, over 13,000 MOF structures were computationally generated using the topologically based crystal constructor (ToBaCCo). They represent a diverse set of structures from a topology perspective. The textural properties of the structures were also determined using a variety of tools. Lastly, GCMC simulations were performed to determine methane and hydrogen adsorption at various conditions. In this work, we use the topology of the structures and the textural properties for clustering, the textural properties for training neural networks in direct and transfer learning, and the adsorption of methane and hydrogen as the tasks to be learned. The data set can be obtained from the relevant publications and github repositories associated with them. 
+The data set used in this work was originally generated in an older report and has also been used previously in a transfer learning study. Briefly, over 13,000 MOF structures were computationally generated using the topologically based crystal constructor (ToBaCCo). They represent a diverse set of structures from a topology perspective. The textural properties of the structures were also determined using a variety of tools. Lastly, GCMC simulations were performed to determine methane and hydrogen adsorption at various conditions. In this work, we use the topology of the structures and the textural properties for clustering, the textural properties for training neural networks in direct and transfer learning, and the adsorption of methane and hydrogen as the tasks to be learned. The data set can be obtained in the data file lists or in that noted in acknowledgements.
 
 
 
@@ -88,6 +88,7 @@ The general way to run a run of the data / code below
             Simply pull the corresponding json from the Data_Json Folder
 
     2. Create the Data
+
         1. Pull the ipynb file from either topology or generic files and place into the net folder directory
 
         2. Make any changes that you want to the file to complete the run (change file configuration in ipynb)
@@ -102,7 +103,7 @@ The general way to run a run of the data / code below
     1. Ensure that the topology files are used in process topology or vice versa for process generic (agreement with data)
 
     2. Enter the relevent configuration information in the first part of the code (this is commented out)
-    
+
     3. It will output the needed figure set for that file
         
    3. Understanding the output
@@ -114,7 +115,9 @@ Instructions for generating general figures
 The general way to run a run of the data / code below  
 
    1. Simply Run the cluster analysis.ipynb file in the directory 
+
         Note - this file should be adjusted for what one figures you want and is set to save the figures in the directory
+
    2. Use mover to package the output figures if desired
 
 Figure 1        
@@ -131,4 +134,22 @@ Figure 1
     │   │
     │   └── Tables            <- Tabular summary of the data using tables with respect to net PC distance
 
+
+Acknowledgements      
+--------
+Data was forked off the following database as a starting point: 
+https://github.com/RUIMINMA1996/TL_MOF'
+
+Which was used in conjunction with this paper :
+[Transfer Learning Study of Gas Adsorption in Metal-Organic Frameworks](https://pubs.acs.org/doi/10.1021/acsami.0c06858?ref=pdf)
+Ruimin Ma, Yamil J. Colón, Tengfei Luo
+
+Creator Contracts
+--------
+Colón Group - [Website](https://www.computationalnano.org/)
+Gregory Cooper -  [My Github](https://github.com/Gregory-Cooper) - coopergregorym@gmail.com
+Yamil Colón -  ** Insert here ** - ycolon@nd.edu
+
+## Note
+Code and data for academic purpose only.
  
