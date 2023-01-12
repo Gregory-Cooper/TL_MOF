@@ -82,18 +82,27 @@ Instructions for running a trial
 The general way to run a run of the data / code below  
 
    1. Aquire the data
+
     1. Get the Data from json
-        Simply pull the corresponding json from the Data_Json Folder
+
+            Simply pull the corresponding json from the Data_Json Folder
+
     2. Create the Data
         1. Pull the ipynb file from either topology or generic files and place into the net folder directory
+
         2. Make any changes that you want to the file to complete the run (change file configuration in ipynb)
-            (Note that this will create display the configurations you need to process files later)
+
+                (Note that this will create display the configurations you need to process files later)
+
         3. Run the file through and generate the json file needed
     
         
    2. Used the correct process file
+
     1. Ensure that the topology files are used in process topology or vice versa for process generic (agreement with data)
+
     2. Enter the relevent configuration information in the first part of the code (this is commented out)
+    
     3. It will output the needed figure set for that file
         
    3. Understanding the output
