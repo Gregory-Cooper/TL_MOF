@@ -15,6 +15,10 @@ from scipy.spatial import distance_matrix
 def get_processed_data(unprocessed=False):
     """
     gets processed data for use in clustering primarily
+
+    Outputs 
+    -------
+    g (df) - processed data in form for analysis
     """
     # file name and data pathv 
     base_path = os.getcwd()
