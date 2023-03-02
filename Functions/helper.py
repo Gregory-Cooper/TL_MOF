@@ -37,8 +37,14 @@ def count_clusters(abridge):
     return dic
 
 def anaylsis(mega,adjust=1,n=1,epochs=500,save=True):
-    """
-    anaylsis of transfer learning graphs
+    """_summary_
+
+    Args:
+        mega (_type_): _description_
+        adjust (int, optional): _description_. Defaults to 1.
+        n (int, optional): _description_. Defaults to 1.
+        epochs (int, optional): _description_. Defaults to 500.
+        save (bool, optional): _description_. Defaults to True.
     """
     for count,i in enumerate(mega):
         hold=[]
