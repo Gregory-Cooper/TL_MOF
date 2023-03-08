@@ -79,7 +79,7 @@ class MyDataset(Dataset):
 
 	def __getitem__(self,idx):
 		return self.x_train[idx],self.y_train[idx]
-"""
+
 class NeuralNet_sherpa_optimize_1(nn.Module):
 	"nn used to optmize on device not found in cpu, method was depreciated"
 	def __init__(self, input_size,output_size, Parameters):
@@ -109,4 +109,3 @@ class NeuralNet_sherpa_optimize_1(nn.Module):
 		out = self.activate(out)
 		out = self.fc3(out)
 		return out 
-""""
