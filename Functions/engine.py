@@ -168,12 +168,14 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
             output2={}
             output3={}
             for count,z in enumerate(dif_holder):
+                if std_diff[count] < 0:
+                    std_diff[count]==0
                 if overfit_holder[count]:
-                    plt.errorbar(count,-z,marker="x",c=Cluster_colors[count],yerr=std_diff[count])
+                    #plt.errorbar(count,-z,marker="x",c=Cluster_colors[count],yerr=std_diff[count])
                     t1="Over"
                     t1_1="Over"
                 else:
-                    plt.errorbar(count,z,marker="o",c=Cluster_colors[count],yerr=std_diff[count])
+                    #plt.errorbar(count,z,marker="o",c=Cluster_colors[count],yerr=std_diff[count])
                     t1=z
                     t1_1=std_diff[count]
                 output1[count]=[t1,t1_1]
@@ -185,7 +187,7 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
             plt.show()
             for count,g in enumerate(residual_holder):
                 if g == "error":
-                    plt.errorbar(count,0,c=Cluster_colors[count],yerr=0,fmt="x")
+                    #plt.errorbar(count,0,c=Cluster_colors[count],yerr=0,fmt="x")
                     t2="Over"
                     t2_1="Over"
                 else:
@@ -198,7 +200,9 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
                         plt.ylabel("MegaBytes")
                     t2=g
                     t2_1=std_res[count]*conversion
-                    plt.errorbar(count,g,c=Cluster_colors[count],yerr=std_res[count]*conversion,fmt="o")
+                    if std_res[count] < 0:
+                        std_res[count]==0
+                    #plt.errorbar(count,g,c=Cluster_colors[count],yerr=std_res[count]*conversion,fmt="o")
                 output2[count]=[t2,t2_1]
             plt.title(f"Average Information to reach {difference} Deviation Base {i[0]-1}")
             plt.xlabel("Transfer Cluster")
@@ -207,11 +211,11 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
             plt.show()
             for count,f in enumerate(integral_holder):
                 if f == "error":
-                    plt.errorbar(count,0,c=Cluster_colors[count],yerr=0,fmt="x")
+                    #plt.errorbar(count,0,c=Cluster_colors[count],yerr=0,fmt="x")
                     t3="Over"
                     t3_1="Over"
                 else:
-                    plt.errorbar(count,f,c=Cluster_colors[count],yerr=std_int[count],fmt="o")
+                    #plt.errorbar(count,f,c=Cluster_colors[count],yerr=std_int[count],fmt="o")
                     t3=f
                     t3_1=std_int[count]
                 output3[count]=[t3,t3_1]
@@ -254,12 +258,14 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
             std_res.append(0)
         last=f_index
     for count,z in enumerate(dif_holder):
+        if std_res[count] < 0:
+            std_res[count]==0
         if overfit_holder[count]:
-            plt.errorbar(count,-z,marker="x",c=Cluster_colors[count],yerr=std_diff[count])
+            #plt.errorbar(count,-z,marker="x",c=Cluster_colors[count],yerr=std_diff[count])
             t1="Over"
             t1_1="Over"
         else:
-            plt.errorbar(count,z,marker="o",c=Cluster_colors[count],yerr=std_diff[count])
+            #plt.errorbar(count,z,marker="o",c=Cluster_colors[count],yerr=std_diff[count])
             t1=z
             t1_1=std_diff[count]
         output1[count]=[t1,t1_1]
@@ -284,7 +290,11 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
                 plt.ylabel("MegaBytes")
             t2=g
             t2_1=std_res[count]*conversion
-            plt.errorbar(count,g,c=Cluster_colors[count],yerr=std_res[count]*conversion,fmt="o")
+            if std_res[count] < 0:
+                std_res[count]==0
+            else:
+                pass
+                #plt.errorbar(count,g,c=Cluster_colors[count],yerr=std_res[count]*conversion,fmt="o")
         output2[count]=[t2,t2_1]  
     plt.title(f"Average Information to reach {difference} Deviation Base {i[0]}")
     plt.xlabel("Transfer Cluster")
@@ -293,11 +303,11 @@ def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_st
     plt.show()
     for count,f in enumerate(integral_holder):
         if f == "error":
-            plt.errorbar(count,0,c=Cluster_colors[count],yerr=0,fmt="x")
+            #plt.errorbar(count,0,c=Cluster_colors[count],yerr=0,fmt="x")
             t3="Over"
             t3_1="Over"
         else:
-            plt.errorbar(count,f,c=Cluster_colors[count],yerr=std_int[count],fmt="o")
+            #plt.errorbar(count,f,c=Cluster_colors[count],yerr=std_int[count],fmt="o")
             t3=f
             t3_1=std_int[count]
         output3[count]=[t3,t3_1]
@@ -325,7 +335,7 @@ def make_distance_graph(dic,distances,Cluster_colors,name,save=False):
             ax = fig.add_subplot(111)
             for count,z in enumerate(Up_max):
                 temp=distances[f_index-1]
-                plt.errorbar(temp[count],z.mean(),yerr=z.std(),fmt="o",c=Cluster_colors[count],label=f"Cluster {count}")
+                #plt.errorbar(temp[count],z.mean(),yerr=z.std(),fmt="o",c=Cluster_colors[count],label=f"Cluster {count}")
                 output[count]=[temp[count],z.mean(),z.std()]
             master[f_index-1]=output
             plt.title(f"Final Preformance for Base Cluster {i[0]-1}")
