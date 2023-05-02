@@ -38,6 +38,20 @@ def get_processed_data(unprocessed=False):
     return g
 
 def prep_data_splits(data,descriptor_columns,one_filter_columns,test_size=.2):
+    """
+    A function to prepare the training, validation, and test data splits.
+
+    Args:
+    - data: A pandas dataframe that includes the data.
+    - descriptor_columns: A list of strings with column names that contain the features of interest.
+    - one_filter_columns: A list of strings with column names that include the filter values.
+    - test_size: A float that represents the ratio of the test set size to the size of the entire dataset.
+
+    Returns:
+    - df_train: A pandas dataframe that includes the training data for the model.
+    - df_val: A pandas dataframe that includes the validation data for the model.
+    - df_test: A pandas dataframe that includes the test data for the model.
+    """
     df, t_1, t_2, y_1, y_2 = stratified_cluster_sample(
         1, data, descriptor_columns, one_filter_columns[0], 5, net_out=True
     )
@@ -61,6 +75,17 @@ def prep_data_splits(data,descriptor_columns,one_filter_columns,test_size=.2):
     return df_train,df_val,df_test
 
 def create_dictionaries(size):
+    """
+    A function to create dictionaries with keys that are tuples of size 2.
+
+    Args:
+    - size: An integer that represents the size of the tuples.
+
+    Returns:
+    - dic: A dictionary that has tuple keys and empty list values.
+    - dic2: A dictionary that has tuple keys and empty list values.
+    - std_store: A dictionary that has tuple keys and empty list values.
+    """
     indexer=itertools.product(range(size),range(size))
     dic={}
     for i in indexer:
@@ -75,6 +100,16 @@ def create_dictionaries(size):
     return dic,dic2,std_store
 
 def unpack_dic(dic,meta):
+    """
+    A function to unpack the contents of a dictionary into a low level dictionary.
+
+    Args:
+    - dic: A dictionary with tuple keys and list values.
+    - meta: A list of lists with tuple keys that are in the given dictionary.
+
+    Returns:
+    - dic: A dictionary that has tuple keys and list values.
+    """
     for i in meta:
         for g in i:
             for count,z in enumerate(i[g]):
@@ -82,6 +117,16 @@ def unpack_dic(dic,meta):
     return dic
 
 def create_std_matrix(dic,std_store):
+    """
+    A function to create a standard deviation matrix for the given dictionary.
+
+    Args:
+    - dic: A dictionary with tuple keys and list values.
+    - std_store: A dictionary with tuple keys and empty list values.
+
+    Returns:
+    - std_store: A dictionary that has tuple keys and list values of the standard deviation matrix.
+    """
     for z in dic:
         matrix=np.matrix(dic[z][0])
         for count,i in enumerate(dic[z]):
@@ -95,6 +140,19 @@ def create_std_matrix(dic,std_store):
     return std_store
 
 def preformance_graph_and_prep_2nd_set(Cluster_colors,dic,dic2,adjust,save=False):
+    """
+    A function to prepare the second set of data for the model and plot the performance graph.
+
+    Args:
+    - Cluster_colors: A list of color strings for plotting.
+    - dic: A dictionary with tuple keys and list values.
+    - dic2: A dictionary with tuple keys and list values.
+    - adjust: A float that represents a scaling factor.
+    - save: A boolean to save the plot image or not. Default is False.
+
+    Returns:
+    - dic2: A dictionary that has tuple keys and list values of the second set of data for the model.
+    """
     last=0
     Up_max=[]
     for i in dic:
@@ -135,6 +193,19 @@ def preformance_graph_and_prep_2nd_set(Cluster_colors,dic,dic2,adjust,save=False
     return dic2
 
 def Transfer_graphs(dic2,resolution,epoch_conversions,Cluster_colors,byte,std_store,epochs,save=False):
+    """
+    A function to plot the transfer graphs.
+
+    Args:
+    - dic2: A dictionary with tuple keys and list values of the second set of data for the model.
+    - resolution: An integer that represents the number of points to plot for the graphs.
+    - epoch_conversions: A dictionary that has integer keys and string values.
+    - Cluster_colors: A list of color strings for plotting.
+    - byte: A boolean that indicates whether the data is in bytes.
+    - std_store: A dictionary that has tuple keys and list values of the standard deviation matrix.
+    - epochs: An integer that represents the number of epochs.
+    - save: A boolean to save the plot image or not. Default is False.
+    """
     dif_holder=[]
     std_diff=[]
     overfit_holder=[]

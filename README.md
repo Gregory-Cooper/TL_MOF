@@ -27,6 +27,10 @@ Project Organization
     │   └── Data_Batch            <- Raw data and analysis files
     ├── Data          <- Data (see dataset)
     │   └── data.csv            <- Tabular MOF Data 
+    ├── Data_for_comparision          <- Data (see dataset)
+    │   ├── (*).pickle      <- Specifc data for each batch process
+    │   │
+    │   └── Compare_smaples.ipynb            <- Used to analyze the data on each model that one run created and compare with more granularity.
     ├── Data_Json          <- Processed Json output of each trial
     │   ├── Generic      <- Data for Generic cluster trials (Transfer refers to task transfer)
     │   │

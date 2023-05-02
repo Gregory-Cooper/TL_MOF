@@ -2,8 +2,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def PCA_order_swap(x):
+    """
+    Swaps clusters to order from left to right on PCA.
+
+    Args:
+        x (int): The cluster to swap.
+
+    Returns:
+        int: The swapped cluster.
+    """
     #swaps clusters to order from left to right on pca
-    #probably should have useed some type of map
+    #probably should have used some type of map but had some issue so hard code time
     x=int(x)
     y=0
     if x == 5:
@@ -22,7 +31,13 @@ def PCA_order_swap(x):
 
 def count_clusters(abridge):
     """
-    counts how many data points are in each cluster per topology, uses a data frame
+    Counts how many data points are in each cluster per topology, using a data frame.
+
+    Args:
+        abridge (pd.DataFrame): The data frame containing cluster and topology data.
+
+    Returns:
+        dict: A dictionary containing the count of data points in each cluster per topology.
     """
     dic={}
     for i in abridge["topology"].unique():
@@ -37,15 +52,17 @@ def count_clusters(abridge):
     return dic
 
 def anaylsis(mega,adjust=1,n=1,epochs=500,save=True):
-    """_summary_
+    """
+    Generates learning curve plots for each cluster.
 
     Args:
-        mega (_type_): _description_
-        adjust (int, optional): _description_. Defaults to 1.
-        n (int, optional): _description_. Defaults to 1.
-        epochs (int, optional): _description_. Defaults to 500.
-        save (bool, optional): _description_. Defaults to True.
+        mega (dict): A dictionary of lists containing cluster data.
+        adjust (int, optional): The adjustment factor for the plot. Defaults to 1.
+        n (int, optional): The starting epoch for the plot. Defaults to 1.
+        epochs (int, optional): The ending epoch for the plot. Defaults to 500.
+        save (bool, optional): A flag indicating whether or not to save the plot. Defaults to True.
     """
+
     for count,i in enumerate(mega):
         hold=[]
         for g in mega[i]:
@@ -81,7 +98,13 @@ def anaylsis(mega,adjust=1,n=1,epochs=500,save=True):
     
 def convert_meta(meta):
     """
-    converts meta into usable format for analysis
+    Converts meta into a usable format for analysis.
+
+    Args:
+        meta (list): A list containing the meta data.
+
+    Returns:
+        dict: A dictionary containing the converted meta data.
     """
     base={}
     for count,i in enumerate((meta[0])):
